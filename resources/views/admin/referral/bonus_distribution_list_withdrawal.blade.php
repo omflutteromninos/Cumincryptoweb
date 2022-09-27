@@ -1,0 +1,95 @@
+@extends('admin.master',['menu'=>'referral', 'sub_menu'=>'bonus_list'])
+@section('title', isset($title) ? $title : '')
+@section('style')
+@endsection
+@section('content')
+    <!-- breadcrumb -->
+    <!-- breadcrumb -->
+    <div class="custom-breadcrumb">
+        <div class="row">
+            <div class="col-12">
+                <ul>
+                    <li>{{__('Membership Club')}}</li>
+                    <li class="active-item">{{__('Bonus Distribution')}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+
+    <!-- User Management -->
+    <div class="user-management padding-30">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <a href="{{route('adminClubBonusDistribution')}}">
+                        <button class="btn btn-success">{{__('Distribute Membership Bonus')}}</button>
+                    </a>
+                    <br>
+                    <small class="text-warning">{{__('Note: To distribute bonus please click this button daily once or configure scheduler at server("php artisan schedule:run") or run the command daily once ("php artisan command:membershipbonus")')}} </small>
+                </div>
+                <div class="header-bar mt-5">
+                    <div class="table-title">
+                        <h3>{{__('Bonus Distribution History')}}</h3>
+                    </div>
+                </div>
+                <div class="table-area">
+                    <div class="table-responsive">
+                        <table id="table" class="table table-borderless custom-table display text-center" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="text-left">{{__('Parent User')}}</th>
+                                <th>{{__('Child User')}}</th>
+                                <th>{{__('Amount')}}</th>
+                                <th>{{__('System Fees')}}</th>
+                                <th>{{__('Tx Id')}}</th>
+                                <th>{{__('Level')}}</th>
+                                <th>{{__('Type')}}</th>
+                                <th>{{__('Status')}}</th>
+                                <th>{{__('Date')}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /User Management -->
+
+
+@endsection
+
+@section('script')
+    <script>
+        $('#table').DataTable({
+            processing: true,
+            serverSide: true,
+            pageLength: 10,
+            retrieve: true,
+            bLengthChange: true,
+            responsive: false,
+            ajax: '{{route('adminReferralBonusHistory')}}',
+            order: [6, 'desc'],
+            autoWidth: false,
+            language: {
+                paginate: {
+                    next: 'Next &#8250;',
+                    previous: '&#8249; Previous'
+                }
+            },
+            columns: [
+                {"data": "user_id","orderable": false},
+                {"data": "child_id","orderable": false},
+                {"data": "plan_id","orderable": false},
+                {"data": "bonus_amount_btc","orderable": false},
+                {"data": "bonus_coin_type","orderable": false},
+                {"data": "status","orderable": false},
+                {"data": "distribution_date","orderable": false}
+            ],
+        });
+
+    </script>
+@endsection
